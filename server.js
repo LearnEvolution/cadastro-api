@@ -19,7 +19,7 @@ app.post('/usuarios', async (req, res) => {
     }
   })
 
-  res.status(201).json({message:'USUARIO CADASTRADO COM SUCESSO!'}, req.body)
+  res.status(201).json({message:'USUARIO CADASTRADO COM SUCESSO!', user: req.body)
 })
 
 // Listar usuários
@@ -63,4 +63,4 @@ app.delete('/usuarios/:id', async (req, res) => {
   res.status(201).json({ message: 'Usuário deletado com sucesso!' })
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
