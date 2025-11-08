@@ -4,8 +4,8 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-
 const app = express()
+
 app.use(express.json())
 app.use(cors())
 
@@ -19,7 +19,10 @@ app.post('/usuarios', async (req, res) => {
     }
   })
 
-  res.status(201).json({message:'USUARIO CADASTRADO COM SUCESSO!', user: req.body)
+  res.status(201).json({
+    message: 'USUARIO CADASTRADO COM SUCESSO!',
+    user: req.body
+  })
 })
 
 // Listar usuários
@@ -60,7 +63,12 @@ app.delete('/usuarios/:id', async (req, res) => {
       id: req.params.id
     }
   })
-  res.status(201).json({ message: 'Usuário deletado com sucesso!' })
+  res.status(201).json({
+    message: 'Usuário deletado com sucesso!'
+  })
 })
 
-app.listen(process.env.PORT || 3000)
+// Porta para deploy Render ou local
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Servidor rodando...')
+})
