@@ -6,8 +6,15 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const app = express()
 
-app.use(express.json())
-app.use(cors())
+// ✅ O CORS deve vir logo no início
+app.use(cors({
+  origin: "https://cadastro-frontend-qpx1r0t4v-learnevolutions-projects.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
+// ✅ Depois o express.json()
+app.use(express.json());
 
 // Criar usuário
 app.post('/usuarios', async (req, res) => {
