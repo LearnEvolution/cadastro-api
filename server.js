@@ -8,7 +8,7 @@ const app = express()
 
 // ✅ O CORS deve vir logo no início
 app.use(cors({
-  origin: "https://cadastro-frontend-qpx1r0t4v-learnevolutions-projects.vercel.app",
+  origin: "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
