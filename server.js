@@ -9,9 +9,9 @@ const app = express()
 // ✅ O CORS deve vir logo no início
 app.use(cors({
   origin: [
-  "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
-  "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
-],
+    "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
+    "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Criar usuário
 app.post('/usuarios', async (req, res) => {
-  await prisma.user.create({
+  await prisma.users.create({
     data: {
       email: req.body.email,
       name: req.body.name,
@@ -37,22 +37,25 @@ app.post('/usuarios', async (req, res) => {
 
 // Listar usuários
 app.get('/usuarios', async (req, res) => {
-  let users
-
-  if (req.query.name) {
-    users = await prisma.user.findMany({
-      where: { name: req.query.name }
-    })
-  } else {
-    users = await prisma.user.findMany()
+  try {
+    let users
+    if (req.query.name) {
+      users = await prisma.users.findMany({
+        where: { name: req.query.name }
+      })
+    } else {
+      users = await prisma.users.findMany()
+    }
+    res.status(200).json(users)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Erro ao buscar usuários')
   }
-
-  res.status(200).json(users)
 })
 
 // Atualizar usuário
 app.put('/usuarios/:id', async (req, res) => {
-  await prisma.user.update({
+  await prisma.users.update({
     where: {
       id: req.params.id
     },
@@ -68,7 +71,7 @@ app.put('/usuarios/:id', async (req, res) => {
 
 // Deletar usuário
 app.delete('/usuarios/:id', async (req, res) => {
-  await prisma.user.delete({
+  await prisma.users.delete({
     where: {
       id: req.params.id
     }
