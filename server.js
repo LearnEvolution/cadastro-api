@@ -21,18 +21,23 @@ app.use(express.json());
 
 // Criar usuário
 app.post('/usuarios', async (req, res) => {
-  await prisma.users.create({
-    data: {
-      email: req.body.email,
-      name: req.body.name,
-      age: req.body.age
-    }
-  })
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: req.body.email,
+        name: req.body.name,
+        age: req.body.age
+      }
+    })
 
-  res.status(201).json({
-    message: 'USUARIO CADASTRADO COM SUCESSO!',
-    user: req.body
-  })
+    res.status(201).json({
+      message: 'USUÁRIO CADASTRADO COM SUCESSO!',
+      user
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Erro ao criar usuário', error: error.message })
+  }
 })
 
 // Listar usuários
@@ -40,11 +45,11 @@ app.get('/usuarios', async (req, res) => {
   try {
     let users
     if (req.query.name) {
-      users = await prisma.users.findMany({
+      users = await prisma.user.findMany({
         where: { name: req.query.name }
       })
     } else {
-      users = await prisma.users.findMany()
+      users = await prisma.user.findMany()
     }
     res.status(200).json(users)
   } catch (error) {
@@ -55,30 +60,33 @@ app.get('/usuarios', async (req, res) => {
 
 // Atualizar usuário
 app.put('/usuarios/:id', async (req, res) => {
-  await prisma.users.update({
-    where: {
-      id: req.params.id
-    },
-    data: {
-      email: req.body.email,
-      name: req.body.name,
-      age: req.body.age
-    }
-  })
-
-  res.status(201).json(req.body)
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: req.params.id },
+      data: {
+        email: req.body.email,
+        name: req.body.name,
+        age: req.body.age
+      }
+    })
+    res.status(200).json(updatedUser)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Erro ao atualizar usuário', error: error.message })
+  }
 })
 
 // Deletar usuário
 app.delete('/usuarios/:id', async (req, res) => {
-  await prisma.users.delete({
-    where: {
-      id: req.params.id
-    }
-  })
-  res.status(201).json({
-    message: 'Usuário deletado com sucesso!'
-  })
+  try {
+    await prisma.user.delete({
+      where: { id: req.params.id }
+    })
+    res.status(200).json({ message: 'Usuário deletado com sucesso!' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Erro ao deletar usuário', error: error.message })
+  }
 })
 
 // Porta para deploy Render ou local
