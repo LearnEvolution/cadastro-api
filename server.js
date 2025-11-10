@@ -3,7 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 
-console.log('DATABASE_URL usada pelo Prisma:', proccess.env.DATABASE_URL)
+console.log('DATABASE_URL usada pelo Prisma:', process.env.DATABASE_URL)
 
 const prisma = new PrismaClient()
 const app = express()
