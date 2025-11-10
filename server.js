@@ -9,14 +9,37 @@ const prisma = new PrismaClient()
 const app = express()
 
 // Middleware CORS
+//app.use(cors({
+ // origin: [
+   // "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
+   // "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
+ // ],
+ // methods: ["GET", "POST", "PUT", "DELETE"],
+ // credentials: true
+//}))
+   
+
+//  app.use(cors({
+ // origin: [
+  //  "http://localhost:5173",  // para testes locais
+ //   "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
+ //   "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
+ // ],
+ // methods: ["GET", "POST", "PUT", "DELETE"],
+ // credentials: true
+//}));
+
+
+
 app.use(cors({
   origin: [
-    "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
-    "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
+    "http://localhost:5173",         // para desenvolvimento local
+    /\.vercel\.app$/                 // libera qualquer domínio *.vercel.app
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
-}))
+}));
+
 
 app.use(express.json())
 
