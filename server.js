@@ -1,12 +1,12 @@
-import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
+import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 const app = express()
 
-// ✅ O CORS deve vir logo no início
+// Middleware CORS
 app.use(cors({
   origin: [
     "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
@@ -14,12 +14,22 @@ app.use(cors({
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
-}));
+}))
 
-// ✅ Depois o express.json()
-app.use(express.json());
+app.use(express.json())
 
-// Criar usuário
+// Teste de conexão com o banco ao iniciar
+async function testDBConnection() {
+  try {
+    await prisma.$connect()
+    console.log('✅ Conexão com MongoDB Atlas bem-sucedida!')
+  } catch (err) {
+    console.error('❌ Erro ao conectar ao MongoDB Atlas:', err.message)
+  }
+}
+testDBConnection()
+
+// Rotas CRUD
 app.post('/usuarios', async (req, res) => {
   try {
     const user = await prisma.user.create({
@@ -29,28 +39,18 @@ app.post('/usuarios', async (req, res) => {
         age: req.body.age
       }
     })
-
-    res.status(201).json({
-      message: 'USUÁRIO CADASTRADO COM SUCESSO!',
-      user
-    })
+    res.status(201).json({ message: 'USUÁRIO CADASTRADO COM SUCESSO!', user })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Erro ao criar usuário', error: error.message })
   }
 })
 
-// Listar usuários
 app.get('/usuarios', async (req, res) => {
   try {
-    let users
-    if (req.query.name) {
-      users = await prisma.user.findMany({
-        where: { name: req.query.name }
-      })
-    } else {
-      users = await prisma.user.findMany()
-    }
+    const users = req.query.name
+      ? await prisma.user.findMany({ where: { name: req.query.name } })
+      : await prisma.user.findMany()
     res.status(200).json(users)
   } catch (error) {
     console.error(error)
@@ -58,7 +58,6 @@ app.get('/usuarios', async (req, res) => {
   }
 })
 
-// Atualizar usuário
 app.put('/usuarios/:id', async (req, res) => {
   try {
     const updatedUser = await prisma.user.update({
@@ -76,12 +75,9 @@ app.put('/usuarios/:id', async (req, res) => {
   }
 })
 
-// Deletar usuário
 app.delete('/usuarios/:id', async (req, res) => {
   try {
-    await prisma.user.delete({
-      where: { id: req.params.id }
-    })
+    await prisma.user.delete({ where: { id: req.params.id } })
     res.status(200).json({ message: 'Usuário deletado com sucesso!' })
   } catch (error) {
     console.error(error)
@@ -89,7 +85,8 @@ app.delete('/usuarios/:id', async (req, res) => {
   }
 })
 
-// Porta para deploy Render ou local
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Servidor rodando...')
+// Inicializar servidor
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}...`)
 })
