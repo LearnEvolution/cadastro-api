@@ -9,11 +9,31 @@ const prisma = new PrismaClient()
 const app = express()
 
 
-app.use(cors({
+/*app.use(cors({
   origin: [
     "http://localhost:5173",         // para desenvolvimento local
     /\.vercel\.app$/                 // libera qualquer domínio *.vercel.app
   ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));*/
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // permite requisições sem origin (Postman, cURL)
+    if (!origin) return callback(null, true);
+
+    // permitir localhost e qualquer frontend da Vercel
+    const allowed = [
+      "http://localhost:5173"
+    ];
+
+    if (allowed.includes(origin) || origin.endsWith(".vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Não permitido pelo CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
