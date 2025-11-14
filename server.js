@@ -43,7 +43,9 @@ const app = express()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://cadastro-frontend-two.vercel.app"
+    "https://cadastro-frontend-two.vercel.app",
+   "https://cadastro-api-jctq.onrender.com",
+   "https://vercel.com/learnevolutions-projects/cadastro-frontend/CXRxRaWn8iU5d7bf3nMniPYievae"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
