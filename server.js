@@ -8,44 +8,11 @@ console.log('DATABASE_URL usada pelo Prisma:', process.env.DATABASE_URL)
 const prisma = new PrismaClient()
 const app = express()
 
-// Middleware CORS
-//app.use(cors({
- // origin: [
-   // "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
-   // "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
- // ],
- // methods: ["GET", "POST", "PUT", "DELETE"],
- // credentials: true
-//}))
-   
-
-//  app.use(cors({
- // origin: [
-  //  "http://localhost:5173",  // para testes locais
- //   "https://cadastro-frontend-ccyxol4gn-learnevolutions-projects.vercel.app",
- //   "https://cadastro-frontend-4b9wq26xz-learnevolutions-projects.vercel.app"
- // ],
- // methods: ["GET", "POST", "PUT", "DELETE"],
- // credentials: true
-//}));
-
-
-
-/*app.use(cors({
-  origin: [
-    "http://localhost:5173",         // para desenvolvimento local
-    /\.vercel\.app$/                 // libera qualquer domínio *.vercel.app
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));*/
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "https://cadastro-frontend-two.vercel.app",
-   "https://cadastro-api-jctq.onrender.com",
-   "https://vercel.com/learnevolutions-projects/cadastro-frontend/CXRxRaWn8iU5d7bf3nMniPYievae"
+    "http://localhost:5173",         // para desenvolvimento local
+    /\.vercel\.app$/                 // libera qualquer domínio *.vercel.app
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
